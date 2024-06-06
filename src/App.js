@@ -1,25 +1,63 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+export default function App() {
+  return <Counter />;
+}
 
-function App() {
+function addDays(date, days) {
+  const newDate = new Date(date);
+  newDate.setDate(date.getDate() + days);
+  return newDate;
+}
+
+function Counter() {
+  const date = new Date();
+  const [days, setDays] = useState(0);
+  const [step, setStep] = useState(1);
+
+  function Reset() {
+    setDays(0);
+    setStep(1);
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div style={{ textAlign: "center" }}>
+      <br></br>
+      <button
+        onClick={() => {
+          if (step > 1) setStep(step - 1);
+        }}
+      >
+        -
+      </button>
+      <input
+        type="range"
+        min="1"
+        max="10"
+        value={step}
+        onChange={(e) => setStep(+e.target.value)}
+      ></input>
+      {`${step}`}
+      <button
+        onClick={() => {
+          if (step < 10) setStep(step + 1);
+        }}
+      >
+        +
+      </button>
+      <br></br>
+      <button onClick={() => setDays(days - step)}>-</button>
+      <input
+        type="text"
+        value={days}
+        onChange={(e) => setDays(+e.target.value)}
+      ></input>
+
+      <button onClick={() => setDays(days + step)}>+</button>
+      <p>{`${days} days from today is ${addDays(
+        date,
+        days
+      ).toDateString()}`}</p>
+      <button onClick={() => Reset()}>Reset</button>
     </div>
   );
 }
-
-export default App;
